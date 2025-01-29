@@ -80,9 +80,10 @@ buttonInput.addEventListener('click', () => {
           
           listElement.appendChild(list)
     } 
-
+    
     inputName.value = '';
     inputComment.value = '';
     
+
 })
 

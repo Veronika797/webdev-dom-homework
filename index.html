@@ -66,7 +66,7 @@
   </body>
 
   <script>
-    
+
 const listElement = document.getElementById('list');
 const inputName = document.getElementById('input-name');
 const inputComment = document.getElementById('input-comment');
@@ -113,6 +113,7 @@ buttonInput.addEventListener('click', () => {
         if (inputComment.value.length <= 10) {
 
             inputComment.classList.add('error');
+            inputComment.placeholder = 'Ваш коментарий меньше 15 символов';
             inputComment.value = '';
 
             isValidation = false;
@@ -153,7 +154,7 @@ buttonInput.addEventListener('click', () => {
     inputName.value = '';
     inputComment.value = '';
     
-})
+});
 
   </script>
 </html>
