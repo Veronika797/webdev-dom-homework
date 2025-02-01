@@ -8,7 +8,7 @@
 
   <body>
     <div class="container">
-      <ul class="comments">
+      <ul id="list" class="comments">
         <li class="comment">
           <div class="comment-header">
             <div>Глеб Фокин</div>
@@ -45,25 +45,75 @@
         </li>
       </ul>
       <div class="add-form">
-        <input
+        <input id="name"
           type="text"
           class="add-form-name"
           placeholder="Введите ваше имя"
         />
-        <textarea
+        <textarea id="comment"
           type="textarea"
           class="add-form-text"
           placeholder="Введите ваш коментарий"
           rows="4"
         ></textarea>
         <div class="add-form-row">
-          <button class="add-form-button">Написать</button>
+          <button id="button" class="add-form-button">Написать</button>
+          <div id="commentList"></div>
         </div>
       </div>
     </div>
   </body>
 
   <script>
-  
+   
+    const listEl = document.getElementById('list');
+    const nameInput = document.getElementById("name");
+    const commentInput = document.getElementById("comment");
+    const submitBtn = document.getElementById("button");
+
+    function inputChange(event) {
+      console.log(`${event.target.id}: ${event.target.value}`);
+    }
+
+    function addComment() {
+      const name = nameInput.value;
+      const comment = commentInput.value;
+      const currentDate = new Date();
+      const formattedDate = currentDate.toLocaleString('ru-RU', 
+                              {hour:"2-digit", 
+                              minute:"2-digit",
+                              year:"2-digit", 
+                              month:"2-digit", 
+                              day:"2-digit"});
+     
+      if (name && comment) {
+        const newComment = document.createElement('li');
+        newComment.innerHTML = `
+        <li class="comment">
+          <div class="comment-header">
+            <div>${name}</div>
+            <div>${formattedDate}</div>
+            </div>
+            <div class="comment-body">
+            <div class="comment-text">${comment}</div>
+            </div>
+            <div class="comment-footer">
+              <div class="likes">
+                <span class="likes-counter">0</span>
+                <button class="like-button"></button>
+                </div>
+                </div>
+                </li>`;
+        listEl.appendChild(newComment);
+        nameInput.value = '';
+      commentInput.value = '';
+      } else {
+        alert('Заполните все поля');
+      }
+    }
+    nameInput.addEventListener('input', inputChange);
+    commentInput.addEventListener('input', inputChange);
+    submitBtn.addEventListener('click', addComment);
+
   </script>
 </html>
