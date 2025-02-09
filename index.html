@@ -6,6 +6,13 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
 
+<body>
+  <head>
+    <title>Проект "Комменты"</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+
   <body>
     <div class="container">
       <ul id="list" class="comments">
@@ -22,7 +29,7 @@
           <div class="comment-footer">
             <div class="likes">
               <span class="likes-counter">3</span>
-              <button class="like-button"></button>
+              <button class="like-button" onclick="handleLikeClick"></button>
             </div>
           </div>
         </li>
@@ -39,7 +46,7 @@
           <div class="comment-footer">
             <div class="likes">
               <span class="likes-counter">75</span>
-              <button class="like-button -active-like"></button>
+              <button class="like-button -active-like" onclick="handleLikeClick"></button>
             </div>
           </div>
         </li>
@@ -62,58 +69,101 @@
         </div>
       </div>
     </div>
-  </body>
-
-  <script>
+    <script>
    
-    const listEl = document.getElementById('list');
-    const nameInput = document.getElementById("name");
-    const commentInput = document.getElementById("comment");
-    const submitBtn = document.getElementById("button");
+      const listEl = document.getElementById('list');
+      const nameInput = document.getElementById("name");
+      const commentInput = document.getElementById("comment");
+      const submitBtn = document.getElementById("button");
+  
+      function inputChange(event) {
+        console.log(`${event.target.id}: ${event.target.value}`);
+      }
 
-    function inputChange(event) {
-      console.log(`${event.target.id}: ${event.target.value}`);
-    }
+      const comments = [
+        {
+        name: "Глеб Фокин",
+        date: "12.02.22 12:18",
+        text: "Это будет первый комментарий на этой странице",
+        likes: 3,
+        liked: true
+        },
+        {
+        name: "Варвара Н.",
+        date: "13.02.22 19:22",
+        text: "Мне нравится как оформлена эта страница! ❤",
+        likes: 75,
+        liked: false
+        }
+      ];
 
-    function addComment() {
-      const name = nameInput.value;
-      const comment = commentInput.value;
-      const currentDate = new Date();
-      const formattedDate = currentDate.toLocaleString('ru-RU', 
-                              {hour:"2-digit", 
-                              minute:"2-digit",
-                              year:"2-digit", 
-                              month:"2-digit", 
-                              day:"2-digit"});
-     
-      if (name && comment) {
-        const newComment = document.createElement('li');
-        newComment.innerHTML = `
-        <li class="comment">
+      function handleLikeClick(index) {
+        comments[index].liked = !comments[index].liked;
+        comments[index].liked ? comments[index].likes++ : 
+        comments[index].likes--;
+        displayComments();
+      }
+
+      function displayComments() {
+        const list = document.getElementById('list');
+        list.innerHTML = '';
+        comments.forEach((comment, index) => {
+          const li = document.createElement('li');
+          li.className = 'comment';
+          li.innerHTML = `
           <div class="comment-header">
-            <div>${name}</div>
-            <div>${formattedDate}</div>
-            </div>
-            <div class="comment-body">
-            <div class="comment-text">${comment}</div>
-            </div>
-            <div class="comment-footer">
-              <div class="likes">
-                <span class="likes-counter">0</span>
-                <button class="like-button"></button>
-                </div>
-                </div>
-                </li>`;
-        listEl.appendChild(newComment);
+          <div>${comment.name}</div>
+         <div>${comment.date}</div>
+         </div>
+         <div class="comment-body">
+         <div class="comment-text">${comment.text}</div>
+         </div>
+         <div class="comment-footer">
+           <div class="likes">
+             <span class="likes-counter">${comment.likes}</span>
+             <button class="like-button ${comment.liked ? 
+             '-active-like' : ''}" onclick="handleLikeClick(${index})"></button>
+             </div>
+             </div>
+          `;
+          list.appendChild(li);
+        });
+      }
+
+      submitBtn.onclick = function() {
+        const currentDate = new Date();
+        const formattedDate = currentDate.toLocaleString('ru-RU', {
+                                year:"2-digit", 
+                                month:"2-digit", 
+                                day:"2-digit",
+                                hour:"2-digit", 
+                                minute:"2-digit",
+                                hour12: false
+                              }).replace(',','');
+      
+        const newComment = {
+          name: nameInput.value ||"аноним",
+          date: formattedDate,
+          text: commentInput.value,
+          likes: 0,
+          liked: false
+        };
+
+      if (commentInput.value.trim()) {
+        comments.push(newComment);
+        displayComments();
         nameInput.value = '';
-      commentInput.value = '';
+        commentInput.value = '';
       } else {
         alert('Заполните все поля');
       }
-    }
-    nameInput.addEventListener('input', inputChange);
-    commentInput.addEventListener('input', inputChange);
-    submitBtn.addEventListener('click', addComment);
-
-  </script>
+      };
+      displayComments();
+  
+      nameInput.addEventListener('input', inputChange);
+      commentInput.addEventListener('input', inputChange);
+      submitBtn.addEventListener('click', addComment);
+  
+    </script>
+  </body>
 </html>
