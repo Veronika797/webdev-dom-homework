@@ -99,7 +99,9 @@
       function displayComments() {
         const list = document.getElementById('list');
         list.innerHTML = '';
-        comments.forEach((comment, index) => {
+        const reversedComments = comments.slice().reverse();
+        reversedComments.forEach((comment, index) => {
+          const originalIndex = comments.length - 1 - index;
           const li = document.createElement('li');
           li.className = 'comment';
           li.innerHTML = `
@@ -114,7 +116,7 @@
            <div class="likes">
              <span class="likes-counter">${comment.likes}</span>
              <button class="like-button ${comment.liked ? 
-             '-active-like' : ''}" onclick="handleLikeClick(${index})"></button>
+             '-active-like' : ''}" onclick="handleLikeClick(${originalIndex})"></button>
              </div>
              </div>
           `;
@@ -150,11 +152,9 @@
         alert('Заполните все поля');
       }
       };
-      displayComments();
   
       nameInput.addEventListener('input', inputChange);
       commentInput.addEventListener('input', inputChange);
-      submitBtn.addEventListener('click', addComment);
   
     </script>
   </body>
