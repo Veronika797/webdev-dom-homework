@@ -103,7 +103,7 @@ buttonInput.addEventListener('click', () => {
         }
 
         if (inputComment.value.length <= 10) {
-
+            inputComment.placeholder = 'Ваш коментарий меньше 15 символов';
             inputComment.classList.add('error');
             inputComment.value = '';
 
