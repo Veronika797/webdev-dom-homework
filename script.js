@@ -123,30 +123,25 @@ buttonInput.addEventListener('click', () => {
 
     } else {
        
-        list.innerHTML = `<div class="comment-header">
-            <div class="title">${inputName.value}</div>
-            <div>${formattedDate}</div>
-          </div>
-          <div class="comment-body">
-            <div class="comment-text">${inputComment.value}
-            </div>
-          </div>
-          <div class="comment-footer">
-            <div class="likes">
-              <span class="likes-counter">0</span>
-              <button class="like-button"></button>
-            </div>
-          </div>`;
+        const newComment = {
+          name: inputName.value, 
+          date: formattedDate, 
+          text: inputComment.value, 
+          likes: 0, 
+          like: false
+        };
 
-          
-          listElement.appendChild(list)
+        userComments.push(newComment);
+
+        renderComments();
     } 
     
     inputName.value = '';
     inputComment.value = '';
-    
+});
 
-})
+renderComments();
+
 
 
 
