@@ -3,7 +3,6 @@ const inputName = document.getElementById('input-name');
 const inputComment = document.getElementById('input-comment');
 const buttonInput = document.getElementById('button');
 const errorClass = document.querySelector('.error');
-const likeButton = document.querySelector('.like-button');
 
 const currentDate = new Date();
 const formattedDate = formatDate(currentDate)
@@ -19,63 +18,12 @@ function formatDate (date) {
 }
 
 const userComments = [
-    {name: 'Глеб Фокин', date: '12.02.22 12:18', text: 'Это будет первый комментарий на этой странице', likes: 3, like: false},
+    {name: 'Глеб Фокин', date: '12.02.22 12:18', text: 'Это будет первый комментарий на этой странице', likes: 3, like: true},
     {name: 'Варвара Н.', date: '13.02.22 19:22', text: 'Мне нравится как оформлена эта страница! ❤', likes: 75, like: false}
   ];
 
 
 
-const renderComments = () => {
-
-    const container = document.getElementById('list');
-
-    container.innerHTML = userComments.map((comment, index) => 
-
-        `<li class="comment">
-          <div class="comment-header">
-            <div class="title">${comment.name}</div>
-            <div>${comment.date}</div>
-          </div>
-          <div class="comment-body">
-            <div class="comment-text">${comment.text}</div>
-          </div>
-          <div class="comment-footer">
-            <div class="likes">
-              <span class="likes-counter">${comment.likes}</span>
-              <button class="like-button ${comment.like ? '-active-like' : ''}" data-index ="${index}"></button>
-            </div>
-          </div>
-        </li>`
-
-    ).join("");
-
-    const likeButtons = document.querySelectorAll('.like-button');
-
-    likeButtons.forEach(button => {
-        button.addEventListener('click', () => {
-
-            const index = button.dataset.index;
-            const comment = userComments[index];
-    
-            if (comment.like) {
-    
-                comment.likes--;
-    
-            } else {
-    
-                comment.likes++
-    
-            } 
-            comment.like = !comment.like;
-    
-            renderComments();
-        })
-        
-    })
-    
-};
-
-renderComments()
 
 
 buttonInput.addEventListener('click', () => {
@@ -103,7 +51,7 @@ buttonInput.addEventListener('click', () => {
         }
 
         if (inputComment.value.length <= 10) {
-            inputComment.placeholder = 'Ваш коментарий меньше 15 символов';
+
             inputComment.classList.add('error');
             inputComment.value = '';
 
@@ -123,25 +71,28 @@ buttonInput.addEventListener('click', () => {
 
     } else {
        
-        const newComment = {
-          name: inputName.value, 
-          date: formattedDate, 
-          text: inputComment.value, 
-          likes: 0, 
-          like: false
-        };
+        list.innerHTML = `<div class="comment-header">
+            <div class="title">${inputName.value}</div>
+            <div>${formattedDate}</div>
+          </div>
+          <div class="comment-body">
+            <div class="comment-text">${inputComment.value}
+            </div>
+          </div>
+          <div class="comment-footer">
+            <div class="likes">
+              <span class="likes-counter">0</span>
+              <button class="like-button"></button>
+            </div>
+          </div>`;
 
-        userComments.push(newComment);
-
-        renderComments();
+          
+          listElement.appendChild(list)
     } 
     
     inputName.value = '';
     inputComment.value = '';
-});
+    
 
-renderComments();
-
-
-
+})
 
