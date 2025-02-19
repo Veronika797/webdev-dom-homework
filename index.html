@@ -89,6 +89,16 @@
         }
       ];
 
+      function sanitizeInput(input) {
+        inputText = input
+                    .replaceAll('&', '&amp;')
+                    .replaceAll('<', '&lt;')
+                    .replaceAll('>', '&gt;')
+                    .replaceAll('"', '&quot;')
+                    .replaceAll("'", '&#39;');
+                    return input
+      }
+
       function handleLikeClick(index) {
         comments[index].liked = !comments[index].liked;
         comments[index].liked ? comments[index].likes++ : 
@@ -99,29 +109,37 @@
       function displayComments() {
         const list = document.getElementById('list');
         list.innerHTML = '';
-        const reversedComments = comments.slice().reverse();
-        reversedComments.forEach((comment, index) => {
-          const originalIndex = comments.length - 1 - index;
+        comments.forEach((comment, index) => {
           const li = document.createElement('li');
-          li.className = 'comment';
+          // li.className = 'comment';
           li.innerHTML = `
+          <li class="comment" onclick="setReply(${index})">
           <div class="comment-header">
-          <div>${comment.name}</div>
+          <div>${sanitizeInput(comment.name)}</div>
          <div>${comment.date}</div>
          </div>
          <div class="comment-body">
-         <div class="comment-text">${comment.text}</div>
+         <div class="comment-text">${sanitizeInput(comment.text)}</div>
          </div>
          <div class="comment-footer">
            <div class="likes">
              <span class="likes-counter">${comment.likes}</span>
              <button class="like-button ${comment.liked ? 
-             '-active-like' : ''}" onclick="handleLikeClick(${originalIndex})"></button>
+             '-active-like' : ''}" onclick="handleLikeClick(${index}); event.stopPropagation()"></button>
              </div>
              </div>
+              </li>
           `;
           list.appendChild(li);
         });
+      }
+
+      function setReply(index) {
+        const comment = comments[index];
+        if (comment) {
+           commentInput.value = `«${sanitizeInput(comment.name)}: "${sanitizeInput(comment.text)}"» , `;
+          // commentInput.value = `${sanitizeInput(comment.name)}: "${sanitizeInput(comment.text)}" , `;
+        }
       }
 
       submitBtn.onclick = function() {
@@ -136,9 +154,9 @@
                               }).replace(',','');
       
         const newComment = {
-          name: nameInput.value ||"аноним",
+          name: sanitizeInput(nameInput.value ||"аноним"),
           date: formattedDate,
-          text: commentInput.value,
+          text: sanitizeInput(commentInput.value),
           likes: 0,
           liked: false
         };
@@ -152,7 +170,7 @@
         alert('Заполните все поля');
       }
       };
-  
+      displayComments();
       nameInput.addEventListener('input', inputChange);
       commentInput.addEventListener('input', inputChange);
   
