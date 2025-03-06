@@ -1,29 +1,20 @@
-import { getComments, addComment, handleLikeClick } from './comments.js'
 import { comments } from './comments.js'
-
-const commentInput = document.getElementById('comment')
-
-export function setReply(index) {
-    const comment = comments[index]
-    if (comment) {
-        commentInput.value = `«${comment.name}: "${comment.text}"» , `
-    }
-}
+import { addLikeHandler, setReply } from './eventHandler.js'
+import { sanitizeInput } from './sanitize.js'
 
 export function displayComments() {
-    const list = document.getElementById('list')
-    list.innerHTML = ''
-    const comment = getComments()
+    const listEl = document.getElementById('list')
+    listEl.innerHTML = ''
     comments.forEach((comment, index) => {
         const li = document.createElement('li')
         li.innerHTML = `
-          <div class="comment" onclick="setReply(${index})">
+          <div class="comment">
           <div class="comment-header">
-          <div>${comment.name}</div>
+          <div>${sanitizeInput(comment.name)}</div>
          <div>${comment.date}</div>
          </div>
          <div class="comment-body">
-         <div class="comment-text">${comment.text}</div>
+         <div class="comment-text">${sanitizeInput(comment.text)}</div>
          </div>
          <div class="comment-footer">
            <div class="likes">
@@ -35,18 +26,8 @@ export function displayComments() {
              </div>
               </div>
           `
-        li.onclick = () => setReply(index)
-        list.appendChild(li)
+        listEl.appendChild(li)
     })
-
-    const likeButttons = document.querySelectorAll('.like-button')
-    likeButttons.forEach((button) => {
-        button.addEventListener('click', (event) => {
-            const index = event.target.dataset.index
-            handleLikeClick(Number(index))
-            event.stopPropagation()
-        })
-    })
+    addLikeHandler()
+    setReply()
 }
-
-displayComments()

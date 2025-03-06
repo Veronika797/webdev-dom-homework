@@ -1,4 +1,4 @@
-const comments = [
+export const comments = [
     {
         name: 'Глеб Фокин',
         date: '12.02.22 12:18',
@@ -15,26 +15,6 @@ const comments = [
     },
 ]
 
-export function getComments() {
-    return comments
-}
-
-export function addComment(newComment) {
+export function updateComments(newComment) {
     comments.push(newComment)
 }
-
-export function handleLikeClick(index) {
-    if (index < 0 || index >= comments.length) {
-        console.error('Invalid index:', index)
-        return
-    }
-}
-export { comments }
-
-export function setReply(index) {
-    const comment = comments[index]
-    if (comment) {
-        commentInput.value = `«${comment.name}: "${comment.text}"» , `
-    }
-}
-displayComments()
