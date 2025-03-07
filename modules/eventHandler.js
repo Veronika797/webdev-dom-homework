@@ -6,7 +6,11 @@ export function addLikeHandler() {
     likeButtons.forEach((button) => {
         button.addEventListener('click', (event) => {
             const index = event.target.dataset.index
-            handleLikeClick(index)
+            comments[index].liked = !comments[index].liked
+            comments[index].liked
+                ? comments[index].likes++
+                : comments[index].likes--
+            displayComments()
             event.stopPropagation()
         })
     })
@@ -62,10 +66,4 @@ export function addReplyHandler() {
             alert('Заполните все поля')
         }
     })
-}
-
-export function handleLikeClick(index) {
-    comments[index].liked = !comments[index].liked
-    comments[index].liked ? comments[index].likes++ : comments[index].likes--
-    displayComments()
 }
