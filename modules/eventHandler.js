@@ -1,4 +1,5 @@
-import { comments } from './comments.js'
+import { postComment } from '../api.js'
+import { comments, updateComments } from './comments.js'
 import { displayComments } from './displayComments.js'
 
 export function addLikeHandler() {
@@ -33,6 +34,7 @@ export function setReply() {
 export function addReplyHandler() {
     const commentInput = document.getElementById('comment')
     const submitBtn = document.getElementById('button')
+    const nameInput = document.getElementById('name')
 
     submitBtn.addEventListener('click', function () {
         const currentDate = new Date()
@@ -47,23 +49,18 @@ export function addReplyHandler() {
             })
             .replace(',', '')
 
-        const nameInput = document.getElementById('name')
-
-        const newComment = {
-            name: nameInput.value,
-            date: formattedDate,
-            text: commentInput.value,
-            likes: 0,
-            liked: false,
+        if (!commentInput.value.trim() || !nameInput.value.trim()) {
+            console.error('Заполните форму')
+            return
         }
 
-        if (commentInput.value.trim() && nameInput.value.trim()) {
-            comments.push(newComment)
-            displayComments()
-            nameInput.value = ''
-            commentInput.value = ''
-        } else {
-            alert('Заполните все поля')
-        }
+        postComment(nameInput.value, commentInput.value, formattedDate).then(
+            (data) => {
+                updateComments(data)
+                displayComments()
+                nameInput.value = ''
+                commentInput.value = ''
+            },
+        )
     })
 }
