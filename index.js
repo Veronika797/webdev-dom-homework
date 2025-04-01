@@ -3,6 +3,9 @@ import { displayComments } from './modules/displayComments.js'
 import { addReplyHandler } from './modules/eventHandler.js'
 import { updateComments } from './modules/comments.js'
 
+document.querySelector('.comments').innerHTML =
+    'Подождите, загружаю комментарии...'
+
 fetchComments().then((data) => {
     updateComments(data)
     displayComments()
