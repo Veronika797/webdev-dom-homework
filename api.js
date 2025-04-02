@@ -30,13 +30,12 @@ export const fetchComments = () => {
         })
 }
 
-export const postComment = (name, text, date) => {
+export const postComment = (name, text) => {
     return fetch(host + '/comments', {
         method: 'POST',
         body: JSON.stringify({
             name,
             text,
-            date,
         }),
     }).then(() => {
         return fetchComments()
