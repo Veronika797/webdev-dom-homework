@@ -57,8 +57,8 @@ export function addReplyHandler() {
         document.querySelector('.form-loading').style.display = 'block'
         document.querySelector('.add-form').style.display = 'none'
 
-        postComment(nameInput.value, commentInput.value, formattedDate).then(
-            (data) => {
+        postComment(nameInput.value, commentInput.value, formattedDate)
+            .then((data) => {
                 document.querySelector('.form-loading').style.display = 'none'
                 document.querySelector('.add-form').style.display = 'flex'
 
@@ -66,7 +66,32 @@ export function addReplyHandler() {
                 displayComments()
                 nameInput.value = ''
                 commentInput.value = ''
-            },
-        )
+            })
+            .catch((error) => {
+                document.querySelector('.form-loading').style.display = 'none'
+                document.querySelector('.add-form').style.display = 'flex'
+
+                if (error.message === 'Failed to fetch') {
+                    alert('Нет интернета, попробуйте снова')
+                }
+
+                if (error.message === 'Неверный запрос') {
+                    alert(
+                        'Имя и комментарий должны содержать не менее 3-х символов',
+                    )
+
+                    nameInput.classList.add('-error')
+                    commentInput.classList.add('-error')
+
+                    setTimeout(() => {
+                        nameInput.classList.remove('-error')
+                        commentInput.classList.remove('-error')
+                    }, 2000)
+                }
+
+                if (error.message === 'Ошибка сервера') {
+                    alert('Ошибка сервера')
+                }
+            })
     })
 }
