@@ -71,10 +71,9 @@ export function addNewComments() {
                 document.querySelector('.form-loading').style.display = 'none'
                 document.querySelector('.add-form').style.display = 'flex'
 
-                if (error.message === 'Failed to fetch') {
+                if (error.message === 'Filed to fetch') {
                     alert('Нет интернета, попробуйте снова')
                 }
-
                 if (error.message === 'Неверный запрос') {
                     alert(
                         'Имя и комментарий должны содержать не менее 3-х символов',
