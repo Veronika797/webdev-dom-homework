@@ -31,7 +31,7 @@ export function setReply() {
     })
 }
 
-export function addReplyHandler() {
+export function addNewComments() {
     const commentInput = document.getElementById('comment')
     const submitBtn = document.getElementById('button')
     const nameInput = document.getElementById('name')
