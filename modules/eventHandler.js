@@ -1,6 +1,7 @@
 import { postComment } from '../api.js'
 import { comments, updateComments } from './comments.js'
 import { displayComments } from './displayComments.js'
+import { fetchComments } from '../api.js'
 
 export function addLikeHandler() {
     const likeButtons = document.querySelectorAll('.like-button')
@@ -37,17 +38,17 @@ export function addNewComments() {
     const nameInput = document.getElementById('name')
 
     submitBtn.addEventListener('click', function () {
-        const currentDate = new Date()
-        const formattedDate = currentDate
-            .toLocaleString('ru-RU', {
-                year: '2-digit',
-                month: '2-digit',
-                day: '2-digit',
-                hour: '2-digit',
-                minute: '2-digit',
-                hour12: false,
-            })
-            .replace(',', '')
+        // const currentDate = new Date()
+        // const formattedDate = currentDate
+        //     .toLocaleString('ru-RU', {
+        //         year: '2-digit',
+        //         month: '2-digit',
+        //         day: '2-digit',
+        //         hour: '2-digit',
+        //         minute: '2-digit',
+        //         hour12: false,
+        //     })
+        //     .replace(',', '')
 
         if (!commentInput.value.trim() || !nameInput.value.trim()) {
             alert('Заполните форму')
@@ -57,7 +58,8 @@ export function addNewComments() {
         document.querySelector('.form-loading').style.display = 'block'
         document.querySelector('.add-form').style.display = 'none'
 
-        postComment(nameInput.value, commentInput.value, formattedDate)
+        postComment(nameInput.value, commentInput.value)
+            .then(() => fetchComments())
             .then((data) => {
                 document.querySelector('.form-loading').style.display = 'none'
                 document.querySelector('.add-form').style.display = 'flex'
@@ -71,7 +73,11 @@ export function addNewComments() {
                 document.querySelector('.form-loading').style.display = 'none'
                 document.querySelector('.add-form').style.display = 'flex'
 
-                if (error.message === 'Failed to fetch') {
+                if (
+                    error.message === 'Failed to fetch' ||
+                    error.message ===
+                        'NetworkError when attempting to fetch resource'
+                ) {
                     alert('Нет интернета, попробуйте снова')
                 }
 
