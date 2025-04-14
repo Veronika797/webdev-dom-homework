@@ -1,9 +1,16 @@
 const host = 'https://wedev-api.sky.pro/api/v2/:Veronika797'
 const authHost = ' https://wedev-api.sky.pro/api/user'
-let token = ''
+
+export let token = ''
 
 export const setToken = (newToken) => {
     token = newToken
+}
+
+export let name = ''
+
+export const setName = (newName) => {
+    name = newName
 }
 
 export const fetchComments = () => {
@@ -45,7 +52,6 @@ export const postComment = (name, text) => {
         body: JSON.stringify({
             name,
             text,
-            forceError: true,
         }),
     })
         .then((Response) => {

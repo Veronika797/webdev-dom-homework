@@ -36,7 +36,7 @@ export function addNewComments() {
     const submitBtn = document.getElementById('button')
     const nameInput = document.getElementById('name')
 
-    submitBtn.addEventListener('click', function () {
+    submitBtn.addEventListener('click', () => {
         const currentDate = new Date()
         const formattedDate = currentDate
             .toLocaleString('ru-RU', {
