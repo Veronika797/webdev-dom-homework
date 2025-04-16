@@ -36,6 +36,9 @@ export function addNewComments() {
     const submitBtn = document.getElementById('button')
     const nameInput = document.getElementById('name')
 
+    if (!submitBtn || !commentInput || !nameInput) {
+        console.error('не удалось найти эл-ты')
+    }
     submitBtn.addEventListener('click', () => {
         const currentDate = new Date()
         const formattedDate = currentDate

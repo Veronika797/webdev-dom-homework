@@ -54,8 +54,12 @@ export const renderRegistration = () => {
         const password = passwordEl.value
 
         registration(name, login, password)
-            // registration(nameEl.value, loginEl.value, passwordEl.value)
             .then((Response) => {
+                if (!Response.ok) {
+                    return Response.json().then(() => {
+                        throw new Error('Ошибка регистрации')
+                    })
+                }
                 return Response.json()
             })
             .then((data) => {
@@ -72,9 +76,7 @@ export const renderRegistration = () => {
             })
             .catch((error) => {
                 console.error('Произошла ошибка при регистрации:', error)
-                alert(
-                    'Не удалось завершить регистрацию. Попробуйте еще раз позже.',
-                )
+                alert('Не удалось завершить регистрацию. Попробуйте еще раз.')
             })
     })
 }

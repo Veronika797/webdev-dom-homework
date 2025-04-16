@@ -43,12 +43,21 @@ export const renderLogin = () => {
     submitBtn.addEventListener('click', () => {
         login(loginEl.value, passwordEl.value)
             .then((Response) => {
+                if (!Response.ok) {
+                    return Response.json().then(() => {
+                        throw new Error('Ошибка ввода')
+                    })
+                }
                 return Response.json()
             })
             .then((data) => {
                 setToken(data.user.token)
                 setName(data.user.name)
                 fetchAndRenderComments(data.user.name)
+            })
+            .catch((error) => {
+                console.error('Произошла ошибка при вводе данных:', error)
+                alert('Произошла ошибка при вводе данных. Попробуйте еще раз.')
             })
     })
 }
