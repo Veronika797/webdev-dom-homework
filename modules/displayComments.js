@@ -73,10 +73,6 @@ export function displayComments() {
     const baseHtml = `<ul class="comments">${commentsHtml}</ul>${token ? addCommentsHtml : linkToLoginText}`
     container.innerHTML = baseHtml
 
-    document.querySelector('.link-login').addEventListener('click', () => {
-        renderLogin()
-    })
-
     if (token) {
         addLikeHandler()
         setReply()
