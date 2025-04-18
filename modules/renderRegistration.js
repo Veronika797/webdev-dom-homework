@@ -1,4 +1,4 @@
-import { setToken, setName, registration } from '../api.js'
+import { registration, setToken, setName } from '../api.js'
 import { fetchAndRenderComments } from '../index.js'
 import { renderLogin } from './renderLogin.js'
 
@@ -30,7 +30,7 @@ export const renderRegistration = () => {
         required
     ></input>
     <fieldset class="add-form-registry">
-        <button class="add-form-button-main button-main" type="submit">
+        <button class="add-form-button-main button-main" type="submit" id="regBtn" required>
             Зарегистрироваться
         </button>
         <ul class="add-form-button-link entry">Войти</ul>
@@ -43,17 +43,25 @@ export const renderRegistration = () => {
         renderLogin()
     })
 
-    const nameEl = document.querySelector('#name')
-    const loginEl = document.querySelector('#login')
-    const passwordEl = document.querySelector('#password')
-    const submitBtn = document.querySelector('.button-main')
+    const nameEl = document.getElementById('name')
+    const loginEl = document.getElementById('login')
+    const passwordEl = document.getElementById('password')
+    const regBtn = document.getElementById('regBtn')
 
-    submitBtn.addEventListener('click', function () {
-        const name = nameEl.value
-        const login = loginEl.value
-        const password = passwordEl.value
+    // if (!nameEl || !loginEl.value || !passwordEl.value || !submitBtn) {
+    //     console.error('не удалось найти эл-ты')
+    //     return
+    // }
 
-        registration(name, login, password)
+    regBtn.addEventListener('click', function () {
+        // console.log('кнопка нажата')
+
+        // if (!nameEl || !loginEl.value || !passwordEl.value) {
+        //     alert('Заполните все поля')
+        //     return
+        // }
+
+        registration(nameEl.value, loginEl.value, passwordEl.value)
             .then((Response) => {
                 if (!Response.ok) {
                     return Response.json().then(() => {
@@ -63,16 +71,9 @@ export const renderRegistration = () => {
                 return Response.json()
             })
             .then((data) => {
-                if (data.user) {
-                    setToken(data.user.token)
-                    setName(data.user.name)
-                    fetchAndRenderComments(data.user.name)
-                } else {
-                    console.error('Пользователь не найден в ответе API:', data)
-                    alert(
-                        'Ошибка регистрации. Пожалуйста, проверьте введенные данные.',
-                    )
-                }
+                setToken(data.user.token)
+                setName(data.user.name)
+                fetchAndRenderComments()
             })
             .catch((error) => {
                 console.error('Произошла ошибка при регистрации:', error)

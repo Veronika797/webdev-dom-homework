@@ -23,7 +23,7 @@ export const renderLogin = () => {
         required
     ></input>
     <fieldset class="add-form-registry">
-        <button class="add-form-button-main button-main" type="submit">
+        <button class="add-form-button-main button-main" type="submit" id="logBtn" required>
             Войти
         </button>
         <ul class="add-form-button-link registry">Зарегистрироваться</ul>
@@ -36,11 +36,22 @@ export const renderLogin = () => {
         renderRegistration()
     })
 
-    const loginEl = document.querySelector('#login')
-    const passwordEl = document.querySelector('#password')
-    const submitBtn = document.querySelector('.button-main')
+    const loginEl = document.getElementById('login')
+    const passwordEl = document.getElementById('password')
+    const logBtn = document.getElementById('logBtn')
 
-    submitBtn.addEventListener('click', () => {
+    // if (!loginEl.value || !passwordEl.value || !submitBtn) {
+    //     console.error('не удалось найти эл-ты')
+    //     return
+    // }
+
+    logBtn.addEventListener('click', () => {
+        // console.log('кнопка нажата')
+        // if (!loginEl.value || !passwordEl.value) {
+        //     alert('Заполните все поля')
+        //     return
+        // }
+
         login(loginEl.value, passwordEl.value)
             .then((Response) => {
                 if (!Response.ok) {
@@ -53,7 +64,7 @@ export const renderLogin = () => {
             .then((data) => {
                 setToken(data.user.token)
                 setName(data.user.name)
-                fetchAndRenderComments(data.user.name)
+                fetchAndRenderComments()
             })
             .catch((error) => {
                 console.error('Произошла ошибка при вводе данных:', error)

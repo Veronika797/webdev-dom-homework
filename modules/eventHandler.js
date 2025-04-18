@@ -33,13 +33,14 @@ export function setReply() {
 
 export function addNewComments() {
     const commentInput = document.getElementById('comment')
-    const submitBtn = document.getElementById('button')
+    const btnAdd = document.getElementById('button')
     const nameInput = document.getElementById('name')
 
-    if (!submitBtn || !commentInput || !nameInput) {
-        console.error('не удалось найти эл-ты')
-    }
-    submitBtn.addEventListener('click', () => {
+    // if (!submitBtn || !commentInput || !nameInput) {
+    //     console.error('не удалось найти эл-ты')
+    //     console.log(commentInput, submitBtn, nameInput)
+    // }
+    btnAdd.addEventListener('click', () => {
         const currentDate = new Date()
         const formattedDate = currentDate
             .toLocaleString('ru-RU', {

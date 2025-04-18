@@ -1,12 +1,17 @@
 import { comments } from './comments.js'
-import { addLikeHandler, setReply } from './eventHandler.js'
+import { addLikeHandler, addNewComments, setReply } from './eventHandler.js'
 import { renderLogin } from './renderLogin.js'
 import { sanitizeInput } from './sanitize.js'
 import { token, name } from '../api.js'
 
 // document.addEventListener('DOMContentLoaded', () => {
-//     displayComments()
+//     const submitBtn = document.querySelector('.button-main')
 // })
+// if (submitBtn) {
+//     submitBtn.addEventListener('click', addNewComments)
+// } else {
+//     console.error('не удалось найти кнопку')
+// }
 
 export function displayComments() {
     const container = document.querySelector('.container')
@@ -68,9 +73,15 @@ export function displayComments() {
     const baseHtml = `<ul class="comments">${commentsHtml}</ul>${token ? addCommentsHtml : linkToLoginText}`
     container.innerHTML = baseHtml
 
+    document.querySelector('.link-login').addEventListener('click', () => {
+        renderLogin()
+    })
+
     if (token) {
         addLikeHandler()
         setReply()
+        const submitBtn = document.querySelector('.add-form-button')
+        submitBtn.addEventListener('click', addNewComments)
     } else {
         const linkLoginElement = document.querySelector('.link-login')
 
