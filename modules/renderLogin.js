@@ -40,18 +40,7 @@ export const renderLogin = () => {
     const passwordEl = document.getElementById('password')
     const logBtn = document.getElementById('logBtn')
 
-    // if (!loginEl.value || !passwordEl.value || !submitBtn) {
-    //     console.error('не удалось найти эл-ты')
-    //     return
-    // }
-
     logBtn.addEventListener('click', () => {
-        // console.log('кнопка нажата')
-        // if (!loginEl.value || !passwordEl.value) {
-        //     alert('Заполните все поля')
-        //     return
-        // }
-
         login(loginEl.value, passwordEl.value)
             .then((Response) => {
                 if (!Response.ok) {

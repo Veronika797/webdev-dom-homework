@@ -1,6 +1,7 @@
 import { postComment } from '../api.js'
 import { comments, updateComments } from './comments.js'
 import { displayComments } from './displayComments.js'
+import { renderComments } from './renderComments.js'
 
 export function addLikeHandler() {
     const likeButtons = document.querySelectorAll('.like-button')
@@ -11,7 +12,7 @@ export function addLikeHandler() {
             comments[index].liked
                 ? comments[index].likes++
                 : comments[index].likes--
-            displayComments()
+            renderComments()
             event.stopPropagation()
         })
     })
@@ -32,14 +33,12 @@ export function setReply() {
 }
 
 export function addNewComments() {
+    console.log('отправка')
+
     const commentInput = document.getElementById('comment')
     const btnAdd = document.getElementById('button')
     const nameInput = document.getElementById('name')
 
-    // if (!submitBtn || !commentInput || !nameInput) {
-    //     console.error('не удалось найти эл-ты')
-    //     console.log(commentInput, submitBtn, nameInput)
-    // }
     btnAdd.addEventListener('click', () => {
         const currentDate = new Date()
         const formattedDate = currentDate

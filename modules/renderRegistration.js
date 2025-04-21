@@ -48,19 +48,7 @@ export const renderRegistration = () => {
     const passwordEl = document.getElementById('password')
     const regBtn = document.getElementById('regBtn')
 
-    // if (!nameEl || !loginEl.value || !passwordEl.value || !submitBtn) {
-    //     console.error('не удалось найти эл-ты')
-    //     return
-    // }
-
     regBtn.addEventListener('click', function () {
-        // console.log('кнопка нажата')
-
-        // if (!nameEl || !loginEl.value || !passwordEl.value) {
-        //     alert('Заполните все поля')
-        //     return
-        // }
-
         registration(nameEl.value, loginEl.value, passwordEl.value)
             .then((Response) => {
                 if (!Response.ok) {
