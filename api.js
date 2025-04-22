@@ -53,23 +53,22 @@ export const postComment = (name, text) => {
             name,
             text,
         }),
+        // headers: {
+        //     'Content-Type': 'application/json',
+        // },
+    }).then((Response) => {
+        if (Response.status === 400) {
+            throw new Error('Неверный запрос')
+        }
+
+        if (Response.status === 500) {
+            throw new Error('Ошибка сервера')
+        }
+
+        if (Response.status === 201) {
+            return Response.json()
+        }
     })
-        .then((Response) => {
-            if (Response.status === 400) {
-                throw new Error('Неверный запрос')
-            }
-
-            if (Response.status === 500) {
-                throw new Error('Ошибка сервера')
-            }
-
-            if (Response.status === 201) {
-                return Response.json()
-            }
-        })
-        .then(() => {
-            return fetchComments()
-        })
 }
 
 export const login = (login, password) => {
