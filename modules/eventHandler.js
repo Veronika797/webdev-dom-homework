@@ -50,6 +50,7 @@ export function addReplyHandler() {
             .replace(',', '')
 
         if (!commentInput.value.trim() || !nameInput.value.trim()) {
+            alert('Заполните форму')
             console.error('Заполните форму')
             return
         }
