@@ -51,6 +51,7 @@ export function addReplyHandler() {
 
         if (!commentInput.value.trim() || !nameInput.value.trim()) {
             alert('Заполните форму')
+            console.error('Заполните форму')
             return
         }
 
