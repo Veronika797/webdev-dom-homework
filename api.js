@@ -30,15 +30,28 @@ export const fetchComments = () => {
         })
 }
 
-export const postComment = (name, text, date) => {
+export const postComment = (name, text) => {
     return fetch(host + '/comments', {
         method: 'POST',
         body: JSON.stringify({
             name,
             text,
-            date,
+            forceError: true,
         }),
-    }).then(() => {
-        return fetchComments()
+        // headers: {
+        //     'Content-Type': 'application/json',
+        // },
+    }).then((Response) => {
+        if (Response.status === 400) {
+            throw new Error('Неверный запрос')
+        }
+
+        if (Response.status === 500) {
+            throw new Error('Ошибка сервера')
+        }
+
+        if (Response.status === 201) {
+            return Response.json()
+        }
     })
 }

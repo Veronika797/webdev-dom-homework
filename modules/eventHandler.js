@@ -1,6 +1,7 @@
 import { postComment } from '../api.js'
 import { comments, updateComments } from './comments.js'
 import { displayComments } from './displayComments.js'
+import { fetchComments } from '../api.js'
 
 export function addLikeHandler() {
     const likeButtons = document.querySelectorAll('.like-button')
@@ -31,23 +32,23 @@ export function setReply() {
     })
 }
 
-export function addReplyHandler() {
+export function addNewComments() {
     const commentInput = document.getElementById('comment')
     const submitBtn = document.getElementById('button')
     const nameInput = document.getElementById('name')
 
     submitBtn.addEventListener('click', function () {
-        const currentDate = new Date()
-        const formattedDate = currentDate
-            .toLocaleString('ru-RU', {
-                year: '2-digit',
-                month: '2-digit',
-                day: '2-digit',
-                hour: '2-digit',
-                minute: '2-digit',
-                hour12: false,
-            })
-            .replace(',', '')
+        // const currentDate = new Date()
+        // const formattedDate = currentDate
+        //     .toLocaleString('ru-RU', {
+        //         year: '2-digit',
+        //         month: '2-digit',
+        //         day: '2-digit',
+        //         hour: '2-digit',
+        //         minute: '2-digit',
+        //         hour12: false,
+        //     })
+        //     .replace(',', '')
 
         if (!commentInput.value.trim() || !nameInput.value.trim()) {
             alert('Заполните форму')
@@ -55,13 +56,49 @@ export function addReplyHandler() {
             return
         }
 
-        postComment(nameInput.value, commentInput.value, formattedDate).then(
-            (data) => {
+        document.querySelector('.form-loading').style.display = 'block'
+        document.querySelector('.add-form').style.display = 'none'
+
+        postComment(nameInput.value, commentInput.value)
+            .then(() => fetchComments())
+            .then((data) => {
+                document.querySelector('.form-loading').style.display = 'none'
+                document.querySelector('.add-form').style.display = 'flex'
+
                 updateComments(data)
                 displayComments()
                 nameInput.value = ''
                 commentInput.value = ''
-            },
-        )
+            })
+            .catch((error) => {
+                document.querySelector('.form-loading').style.display = 'none'
+                document.querySelector('.add-form').style.display = 'flex'
+
+                if (
+                    error.message === 'Failed to fetch' ||
+                    error.message ===
+                        'NetworkError when attempting to fetch resource'
+                ) {
+                    alert('Нет интернета, попробуйте снова')
+                }
+
+                if (error.message === 'Неверный запрос') {
+                    alert(
+                        'Имя и комментарий должны содержать не менее 3-х символов',
+                    )
+
+                    nameInput.classList.add('-error')
+                    commentInput.classList.add('-error')
+
+                    setTimeout(() => {
+                        nameInput.classList.remove('-error')
+                        commentInput.classList.remove('-error')
+                    }, 2000)
+                }
+
+                if (error.message === 'Ошибка сервера') {
+                    alert('Ошибка сервера')
+                }
+            })
     })
 }
