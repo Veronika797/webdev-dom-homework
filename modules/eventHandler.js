@@ -1,7 +1,8 @@
 import { postComment } from '../api.js'
 import { comments, updateComments } from './comments.js'
 import { displayComments } from './displayComments.js'
-import { fetchComments } from '../api.js'
+import { renderComments } from './renderComments.js'
+
 
 export function addLikeHandler() {
     const likeButtons = document.querySelectorAll('.like-button')
@@ -12,7 +13,7 @@ export function addLikeHandler() {
             comments[index].liked
                 ? comments[index].likes++
                 : comments[index].likes--
-            displayComments()
+            renderComments()
             event.stopPropagation()
         })
     })
@@ -33,22 +34,24 @@ export function setReply() {
 }
 
 export function addNewComments() {
+    console.log('отправка')
+
     const commentInput = document.getElementById('comment')
-    const submitBtn = document.getElementById('button')
+    const btnAdd = document.getElementById('button')
     const nameInput = document.getElementById('name')
 
-    submitBtn.addEventListener('click', function () {
-        // const currentDate = new Date()
-        // const formattedDate = currentDate
-        //     .toLocaleString('ru-RU', {
-        //         year: '2-digit',
-        //         month: '2-digit',
-        //         day: '2-digit',
-        //         hour: '2-digit',
-        //         minute: '2-digit',
-        //         hour12: false,
-        //     })
-        //     .replace(',', '')
+    btnAdd.addEventListener('click', () => {
+        const currentDate = new Date()
+        const formattedDate = currentDate
+            .toLocaleString('ru-RU', {
+                year: '2-digit',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: false,
+            })
+            .replace(',', '')
 
         if (!commentInput.value.trim() || !nameInput.value.trim()) {
             alert('Заполните форму')

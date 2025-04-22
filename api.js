@@ -1,4 +1,17 @@
-const host = 'https://wedev-api.sky.pro/api/v1/Veronika797'
+const host = 'https://wedev-api.sky.pro/api/v2/:Veronika797'
+const authHost = ' https://wedev-api.sky.pro/api/user'
+
+export let token = ''
+
+export const setToken = (newToken) => {
+    token = newToken
+}
+
+export let name = ''
+
+export const setName = (newName) => {
+    name = newName
+}
 
 export const fetchComments = () => {
     return fetch(host + '/comments')
@@ -33,10 +46,12 @@ export const fetchComments = () => {
 export const postComment = (name, text) => {
     return fetch(host + '/comments', {
         method: 'POST',
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
         body: JSON.stringify({
             name,
             text,
-            forceError: true,
         }),
         // headers: {
         //     'Content-Type': 'application/json',
@@ -53,5 +68,19 @@ export const postComment = (name, text) => {
         if (Response.status === 201) {
             return Response.json()
         }
+    })
+}
+
+export const login = (login, password) => {
+    return fetch(authHost + '/login', {
+        method: 'POST',
+        body: JSON.stringify({ login: login, password: password }),
+    })
+}
+
+export const registration = (login, name, password) => {
+    return fetch(authHost, {
+        method: 'POST',
+        body: JSON.stringify({ login: login, name: name, password: password }),
     })
 }
